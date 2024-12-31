@@ -2,62 +2,79 @@
 
 This application is a FastAPI-based service for image processing tasks, including image upload, manipulation, histogram generation, and segmentation.
 
+![system](/documentation/system.png)
+
 ## Prerequisites
 
-- Python 3.8+
-- `uv` (for managing dependencies and environment)
-- `uvicorn` (ASGI server for running FastAPI)
+- Docker
+- Docker Compose
 
 ## Setup Instructions
 
-### 1. Install `uv`
+### Using Docker
 
-If you haven't installed `uv` yet, you can do so by following the instructions on the [uv GitHub repository](https://github.com/astral-sh/uv).
+1. **Build the Docker Image**
 
-### 2. Initialize the Project
+   To build the Docker image for the FastAPI application, run the following command in the root directory of your project:
 
-If you haven't already initialized your project with `uv`, run the following command in your project directory:
+   ```bash
+   docker-compose build --no-cache
+   ```
 
-```bash
-uv init
-```
+   This command builds the Docker image without using the cache, ensuring that all changes are applied.
 
-### 3. Install Dependencies
+2. **Run the Docker Containers**
 
-Install the dependencies from the `requirements.txt` file:
+   Start the FastAPI application and the PostgreSQL database using Docker Compose:
 
-```bash
-uv add -r requirements.txt
-```
+   ```bash
+   docker-compose up
+   ```
 
-### 4. Create and Activate a Virtual Environment
+   This command will start the services defined in your `docker-compose.yml` file.
 
-Create a virtual environment and activate it:
+3. **Access the Application**
 
-```bash
-uv venv
-source .venv/bin/activate  # On Windows, use `.venv\Scripts\activate`
-```
+   - Access the automatically generated API documentation at `http://127.0.0.1:8000/docs`.
 
-### 5. Run the Application
-
-Use `uvicorn` to run the FastAPI application:
-
-```bash
-uv run uvicorn app.main:app --reload
-```
-
-- `app.main:app` specifies the module and application instance to run.
-- `--reload` enables auto-reloading, which is useful during development as it automatically reloads the server when you make changes to your code.
-
-### 6. Access the Application
-
-- Open your web browser and go to `http://127.0.0.1:8000` to see your FastAPI application running.
-- Access the automatically generated API documentation at `http://127.0.0.1:8000/docs`.
-
-## Features
+### Features
 
 - **Image Upload**: Upload images for processing with support for batch uploads.
 - **Image Manipulation**: Resize, crop, and convert image formats.
 - **Histogram Generation**: Retrieve color histograms for uploaded images.
 - **Segmentation**: Retrieve segmentation masks for uploaded images.
+
+## Environment Configuration
+
+The application uses a `.env.docker` file to manage environment-specific configurations. Ensure this file is present in the root directory with the following content:
+```
+# Database configuration
+DATABASE_URL=postgresql+asyncpg://fastapi:fastapi@db:5432/fastapi
+
+# Directory paths
+TEMP_IMAGE_DIR=temp_images
+TEMP_JSON_DIR=temp_jsons
+```
+
+
+## Additional Information
+
+- **Docker**: Ensure Docker and Docker Compose are installed on your system. You can download them from [Docker's official website](https://www.docker.com/).
+- **Environment Variables**: The `.env.docker` file is used to configure environment variables for the Docker environment.
+
+## Further Work
+
+### Add Users and Authorization
+
+To ensure our application is secure, we should implement user management and authorization for jobs and processes. This will help control access and ensure that only authorized users can perform certain actions.
+
+### Background Image Processing with Celery and RabbitMQ
+
+Enhance the application by offloading image processing tasks to the background using Celery and RabbitMQ. This setup allows for asynchronous task processing, improving the responsiveness and *scalability* of the application.
+
+To handle security between microservices, consider using a token-based east-west approach to secure Celery workers.
+
+### Enhance User Interactions
+
+- Add progress tracking for each process so users can monitor the status of their tasks.
+- Implement email notifications to inform users when processes are complete, sending results as soon as they are available.
