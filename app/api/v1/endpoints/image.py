@@ -1,5 +1,6 @@
 from fastapi import APIRouter, HTTPException, UploadFile, File, Depends
 from typing import List, Optional
+from app.schemas.crud import ResultResponse
 from app.services.image_histogram_service import get_image_histogram
 from app.services.image_segmentation_service import get_image_segmentation
 from app.services.image_service import (
@@ -12,6 +13,7 @@ from app.schemas.image import (
 )
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.database.database import get_db
+from app.database.crud import get_result_by_process
 
 router = APIRouter()
 
@@ -70,5 +72,15 @@ async def get_segmentation(job_id: str, db: AsyncSession = Depends(get_db)):
     try:
         segmentation = await get_image_segmentation(job_id, db)
         return segmentation
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+@router.get("/results/{process_id}", response_model=list[ResultResponse])
+async def view_results_by_process(process_id: int, db: AsyncSession = Depends(get_db)):
+    try:
+        results = await get_result_by_process(db, process_id)
+        if not results:
+            raise HTTPException(status_code=404, detail="No results found for this process")
+        return results
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))

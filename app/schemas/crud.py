@@ -1,5 +1,4 @@
 from pydantic import BaseModel
-from typing import Optional
 
 class JobCreate(BaseModel):
     pass
@@ -19,3 +18,9 @@ class ResultCreate(BaseModel):
 class ResultUpdate(BaseModel):
     status: str
     result_url: str
+
+class ResultResponse(BaseModel):
+    id: int
+    status: str
+    result_url: str
+    image_id: int
