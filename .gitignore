@@ -12,6 +12,7 @@ wheels/
 pyproject.toml
 
 /temp_images
+/temp_jsons
 *.db
 
 uv.lock

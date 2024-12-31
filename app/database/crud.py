@@ -1,4 +1,3 @@
-from fastapi import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from app.database.models import Job, Image, Result, Process
@@ -27,7 +26,7 @@ async def get_images_by_job(db: AsyncSession, job_id: int) -> list[Image]:
     return result.scalars().all()
 
 async def create_process(db: AsyncSession, process: ProcessCreate) -> Process:
-    db_process = Process(job_id=process.job_id)
+    db_process = Process(job_id=process.job_id, name=process.name)
     db.add(db_process)
     await db.commit()
     await db.refresh(db_process)

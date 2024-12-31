@@ -10,6 +10,7 @@ class ImageCreate(BaseModel):
 
 class ProcessCreate(BaseModel):
     job_id: int
+    name: str
 
 class ResultCreate(BaseModel):
     image_id: int

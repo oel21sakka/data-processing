@@ -11,8 +11,6 @@ from app.schemas.image import (
     ProcessResponse,
     JopResponse,
 )
-from app.database.models import Image as ImageModel
-from app.database.database import get_db
 from app.database.crud import get_images_by_job, create_image, create_job, create_result, create_process, update_result
 from app.schemas.crud import ImageCreate, ResultCreate, ProcessCreate, ResultUpdate
 
@@ -47,7 +45,7 @@ async def manipulate_image(
     convert_format: Optional[str],
     db: AsyncSession
 ) -> ProcessResponse:
-    process_data = ProcessCreate(job_id=job_id)
+    process_data = ProcessCreate(job_id=job_id, name="manipulation")
     process = await create_process(db, process_data)
 
     images = await get_images_by_job(db, job_id=job_id)
