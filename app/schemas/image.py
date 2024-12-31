@@ -1,12 +1,17 @@
 from pydantic import BaseModel
 from typing import Optional, List
 
-class ImageUploadResponse(BaseModel):
-    image_id: str
+class JopResponse(BaseModel):
+    job_id: int
 
-class ImageResponse(BaseModel):
-    width: int
-    height: int
+class ProcessResponse(BaseModel):
+    process_id: int
+
+class ImageUploadResponse(BaseModel):
+    image_id: int
+
+class ResultResponse(BaseModel):
+    result_id: int
 
 class ImageManipulationRequest(BaseModel):
     resize_width: Optional[int] = None
