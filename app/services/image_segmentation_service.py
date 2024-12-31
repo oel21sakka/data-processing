@@ -11,8 +11,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.schemas.image import ProcessResponse
 from app.database.crud import get_images_by_job, create_result, create_process, update_result
 from app.schemas.crud import ResultCreate, ProcessCreate, ResultUpdate
+from dotenv import load_dotenv
 
-TEMP_JSON_DIR = "temp_jsons"
+load_dotenv()
+
+TEMP_JSON_DIR = os.getenv("TEMP_JSON_DIR")
 
 async def get_image_segmentation(job_id: str, db: AsyncSession) -> ProcessResponse:
     os.makedirs(TEMP_JSON_DIR, exist_ok=True)

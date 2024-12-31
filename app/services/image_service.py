@@ -13,8 +13,11 @@ from app.schemas.image import (
 )
 from app.database.crud import get_images_by_job, create_image, create_job, create_result, create_process, update_result
 from app.schemas.crud import ImageCreate, ResultCreate, ProcessCreate, ResultUpdate
+from dotenv import load_dotenv
 
-TEMP_IMAGE_DIR = "temp_images"
+load_dotenv()
+
+TEMP_IMAGE_DIR = os.getenv("TEMP_IMAGE_DIR")
 
 async def save_image(files: List[UploadFile], db: AsyncSession) -> List[ImageUploadResponse]:
     os.makedirs(TEMP_IMAGE_DIR, exist_ok=True)

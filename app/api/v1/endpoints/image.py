@@ -31,7 +31,7 @@ async def upload_images(
 
 @router.post("/process/{job_id}", response_model=ProcessResponse)
 async def process_image(
-    job_id: str,
+    job_id: int,
     resize_width: Optional[int] = None,
     resize_height: Optional[int] = None,
     crop_x: Optional[int] = None,
@@ -59,7 +59,7 @@ async def process_image(
 
 
 @router.get("/histogram/{job_id}", response_model=ProcessResponse)
-async def get_histogram(job_id: str, db: AsyncSession = Depends(get_db)):
+async def get_histogram(job_id: int, db: AsyncSession = Depends(get_db)):
     try:
         histogram = await get_image_histogram(job_id, db)
         return histogram
@@ -68,7 +68,7 @@ async def get_histogram(job_id: str, db: AsyncSession = Depends(get_db)):
 
 
 @router.get("/segmentation/{job_id}", response_model=ProcessResponse)
-async def get_segmentation(job_id: str, db: AsyncSession = Depends(get_db)):
+async def get_segmentation(job_id: int, db: AsyncSession = Depends(get_db)):
     try:
         segmentation = await get_image_segmentation(job_id, db)
         return segmentation

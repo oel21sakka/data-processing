@@ -15,4 +15,6 @@ pyproject.toml
 /temp_jsons
 *.db
 
+.env
+
 uv.lock
